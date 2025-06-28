@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/NikolaTosic-sudo/pokedexcli/internal/pokecache"
 )
 
-func MapCommand(c *config) error {
+func MapCommand(c *config, cache pokecache.Cache) error {
 
 	if c.Next == nil {
 		url := "https://pokeapi.co/api/v2/location-area"
 		c.Next = &url
 	}
 
-	areas, err := c.pokeapiClient.ListLocations(c.Next)
+	areas, err := c.pokeapiClient.ListLocations(c.Next, cache)
 
 	if err != nil {
 		return err
@@ -30,7 +32,7 @@ func MapCommand(c *config) error {
 	return nil
 }
 
-func MapBackCommand(c *config) error {
+func MapBackCommand(c *config, cache pokecache.Cache) error {
 
 	if c.Previous == nil {
 
@@ -39,7 +41,7 @@ func MapBackCommand(c *config) error {
 		return nil
 	}
 
-	areas, err := c.pokeapiClient.ListLocations(c.Previous)
+	areas, err := c.pokeapiClient.ListLocations(c.Previous, cache)
 
 	if err != nil {
 		return err

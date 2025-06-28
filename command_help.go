@@ -1,8 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-func helpCommand(c *config) error {
+	"github.com/NikolaTosic-sudo/pokedexcli/internal/pokecache"
+)
+
+func helpCommand(c *config, cache pokecache.Cache) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")

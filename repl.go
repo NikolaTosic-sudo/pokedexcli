@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/NikolaTosic-sudo/pokedexcli/internal/pokeapi"
+	"github.com/NikolaTosic-sudo/pokedexcli/internal/pokecache"
 )
 
 type config struct {
@@ -15,7 +16,7 @@ type config struct {
 	Previous      *string
 }
 
-func startRepl(c *config) {
+func startRepl(c *config, cache pokecache.Cache) {
 	userInput := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -32,7 +33,7 @@ func startRepl(c *config) {
 		command, ok := allCommands[inputStr]
 
 		if ok {
-			command.callback(c)
+			command.callback(c, cache)
 		} else {
 			fmt.Print("Unknown command\n")
 		}
@@ -42,7 +43,7 @@ func startRepl(c *config) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, pokecache.Cache) error
 }
 
 func getCommands() map[string]cliCommand {
