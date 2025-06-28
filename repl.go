@@ -30,10 +30,17 @@ func startRepl(c *config, cache pokecache.Cache) {
 
 		allCommands := getCommands()
 
-		command, ok := allCommands[inputStr]
+		commandInput := cleanInput(inputStr)
+
+		command, ok := allCommands[commandInput[0]]
 
 		if ok {
-			command.callback(c, cache)
+			//TODO: Gotta update, this is so bad
+			if len(commandInput) == 1 {
+				command.callback(c, cache, "")
+			} else {
+				command.callback(c, cache, commandInput[1])
+			}
 		} else {
 			fmt.Print("Unknown command\n")
 		}
@@ -43,7 +50,7 @@ func startRepl(c *config, cache pokecache.Cache) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, pokecache.Cache) error
+	callback    func(*config, pokecache.Cache, string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -67,6 +74,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Goes to the previous page",
 			callback:    MapBackCommand,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Explores pokemons in a given area",
+			callback:    exploreCommand,
 		},
 	}
 }

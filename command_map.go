@@ -6,7 +6,7 @@ import (
 	"github.com/NikolaTosic-sudo/pokedexcli/internal/pokecache"
 )
 
-func MapCommand(c *config, cache pokecache.Cache) error {
+func MapCommand(c *config, cache pokecache.Cache, location string) error {
 
 	if c.Next == nil {
 		url := "https://pokeapi.co/api/v2/location-area"
@@ -32,7 +32,7 @@ func MapCommand(c *config, cache pokecache.Cache) error {
 	return nil
 }
 
-func MapBackCommand(c *config, cache pokecache.Cache) error {
+func MapBackCommand(c *config, cache pokecache.Cache, location string) error {
 
 	if c.Previous == nil {
 
