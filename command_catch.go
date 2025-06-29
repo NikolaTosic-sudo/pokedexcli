@@ -11,7 +11,7 @@ import (
 func catchCommand(c *config, cache pokecache.Cache, p Pokedex, pokemonName string) error {
 
 	if _, exists := p[pokemonName]; exists {
-		fmt.Print("You already caught " + pokemonName)
+		fmt.Print("You already caught " + pokemonName + "\n")
 		return nil
 	}
 
@@ -33,8 +33,10 @@ func catchCommand(c *config, cache pokecache.Cache, p Pokedex, pokemonName strin
 			fmt.Print(pokemon.Name + " was caught!\n")
 			p[pokemonName] = pokemon
 			return nil
+		} else {
+			fmt.Print(pokemon.Name + " escaped!\n")
+			return nil
 		}
-		fmt.Print(pokemon.Name + " escaped!\n")
 	}
 
 	return nil
