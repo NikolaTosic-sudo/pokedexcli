@@ -6,24 +6,24 @@ func TestCleanInput(t *testing.T) {
 
 	cases := []struct {
 		input    string
-		expected []string
+		expected string
 	}{
 		{
 			input:    " hello world ",
-			expected: []string{"hello", "world"},
+			expected: "hello",
 		},
 		{
 			input:    " test the repl ",
-			expected: []string{"test", "the", "repl"},
+			expected: "test",
 		},
 		{
 			input:    " is this a clean string  ",
-			expected: []string{"is", "this", "a", "clean", "string"},
+			expected: "is",
 		},
 	}
 
 	for _, c := range cases {
-		actual := cleanInput(c.input)
+		actual, _ := cleanInput(c.input)
 
 		if len(actual) != len(c.expected) {
 			t.Errorf("expected length %d, got %d", len(c.expected), len(actual))

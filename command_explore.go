@@ -6,7 +6,7 @@ import (
 	"github.com/NikolaTosic-sudo/pokedexcli/internal/pokecache"
 )
 
-func exploreCommand(c *config, cache pokecache.Cache, location string) error {
+func exploreCommand(c *config, cache pokecache.Cache, p Pokedex, location string) error {
 
 	pokemons, err := c.pokeapiClient.ListPokemons(location, cache)
 

@@ -16,8 +16,11 @@ type config struct {
 	Previous      *string
 }
 
+type Pokedex map[string]pokeapi.Pokemon
+
 func startRepl(c *config, cache pokecache.Cache) {
 	userInput := bufio.NewScanner(os.Stdin)
+	Pokedex := make(Pokedex)
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -30,17 +33,12 @@ func startRepl(c *config, cache pokecache.Cache) {
 
 		allCommands := getCommands()
 
-		commandInput := cleanInput(inputStr)
+		commandString, commandArgs := cleanInput(inputStr)
 
-		command, ok := allCommands[commandInput[0]]
+		command, ok := allCommands[commandString]
 
 		if ok {
-			//TODO: Gotta update, this is so bad
-			if len(commandInput) == 1 {
-				command.callback(c, cache, "")
-			} else {
-				command.callback(c, cache, commandInput[1])
-			}
+			command.callback(c, cache, Pokedex, commandArgs)
 		} else {
 			fmt.Print("Unknown command\n")
 		}
@@ -50,7 +48,7 @@ func startRepl(c *config, cache pokecache.Cache) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, pokecache.Cache, string) error
+	callback    func(*config, pokecache.Cache, Pokedex, string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -80,12 +78,17 @@ func getCommands() map[string]cliCommand {
 			description: "Explores pokemons in a given area",
 			callback:    exploreCommand,
 		},
+		"catch": {
+			name:        "catch",
+			description: "Once you explore an area, try to catch a pokemon...",
+			callback:    catchCommand,
+		},
 	}
 }
 
-func cleanInput(text string) []string {
+func cleanInput(text string) (string, string) {
 	loweredText := strings.ToLower(text)
 	words := strings.Fields(loweredText)
 
-	return words
+	return words[0], strings.Join(words[1:], "-")
 }
