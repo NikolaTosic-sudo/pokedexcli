@@ -23,6 +23,7 @@ func (c *Client) PokemonDetails(pokemon string, cache pokecache.Cache) (Pokemon,
 	res, err := c.httpClient.Do(req)
 
 	if err != nil {
+		fmt.Print("No pokemon with that name")
 		return Pokemon{}, err
 	}
 
